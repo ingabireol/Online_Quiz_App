@@ -39,15 +39,28 @@ public class UserController {
 
         String checkUser = service.loginUser(user);
         if(checkUser.equalsIgnoreCase("admin")){
-            return "redirect:/admin";
+            red.addFlashAttribute("message","Loged in as Admin");
+            red.addFlashAttribute("text","text-success");
+            return "redirect:/login";
+//            return "redirect:/admin";
         } else if (checkUser.equalsIgnoreCase("student")) {
-            return "redirect:/student";
+            red.addFlashAttribute("message","User loged in as Student");
+            red.addFlashAttribute("text","text-success");
+            return "redirect:/login";
+//            return "redirect:/student";
         }
         else {
             red.addFlashAttribute("message","User name and Password Does Not Exist");
+            red.addFlashAttribute("text","text-dander");
             return "redirect:/login";
         }
 
+    }
+
+    @GetMapping("/login")
+    public String getLoginPage(Model model){
+        model.addAttribute("user",new User());
+        return "login";
     }
 
 }

@@ -11,6 +11,5 @@ import java.util.Optional;
 public interface UserDao  extends JpaRepository<User,Long> {
 
 
-    @Query
-    public Optional<User> getUserByEmailAndPassword(String email,String password);
+    public Optional<User> getUserByEmailAndPassword (String email,String password);
 }
