@@ -3,6 +3,7 @@ package com.olim.controller;
 import com.olim.dao.UserDao;
 import com.olim.model.User;
 import com.olim.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,14 +12,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.Date;
+
 @Controller
 public class UserController {
 
     @Autowired
     UserService service;
-    @GetMapping("/signup")
+    @GetMapping("")
     public String getSignUp(Model model){
         model.addAttribute("user",new User());
+        System.out.println(new Date(System.currentTimeMillis()));
         return "signUp";
     }
     @PostMapping("/signup")
@@ -28,22 +32,24 @@ public class UserController {
             return "redirect:/login";
         }
         else{
-            red.addFlashAttribute("meassage","User sign up Failed");
+            red.addFlashAttribute("message","User sign up Failed");
             return "redirect:/signup";
         }
 
     }
 
     @PostMapping("/login")
-    public String login(User user, RedirectAttributes red){
+    public String login(User user, RedirectAttributes red, HttpSession session){
 
         String checkUser = service.loginUser(user);
         if(checkUser.equalsIgnoreCase("admin")){
+            session.setAttribute("user",service.getUserByEmail(user.getEmail()));
             red.addFlashAttribute("message","Loged in as Admin");
             red.addFlashAttribute("text","text-success");
-            return "redirect:/login";
+            return "redirect:/admin";
 //            return "redirect:/admin";
         } else if (checkUser.equalsIgnoreCase("student")) {
+            session.setAttribute("user",user);
             red.addFlashAttribute("message","User loged in as Student");
             red.addFlashAttribute("text","text-success");
             return "redirect:/login";
@@ -61,6 +67,13 @@ public class UserController {
     public String getLoginPage(Model model){
         model.addAttribute("user",new User());
         return "login";
+    }
+    @GetMapping("/admin")
+    public String getHome(Model model,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        System.out.println(user.getEmail()+" "+user.getRole());
+        model.addAttribute("user",user);
+        return "index";
     }
 
 }

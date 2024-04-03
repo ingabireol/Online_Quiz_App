@@ -5,6 +5,7 @@ import com.olim.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,9 @@ public class UserService {
         return dao.existsById(user.getId());
     }
 
+    public User getUserByEmail(String email){
+        return dao.getUserByEmail(email).get();
+    }
     public boolean deleteUser(Long id){
         dao.deleteById(id);
         return !dao.existsById(id);
@@ -25,11 +29,11 @@ public class UserService {
     public User getUser(Long id){
         return dao.findById(id).get();
     }
-    public String loginUser(User user){
+    public  String loginUser(User user){
         Optional<User> logUser = dao.getUserByEmailAndPassword(user.getEmail(),user.getPassword());
         if(logUser.isPresent()){
             if(logUser.get().getRole().equalsIgnoreCase("teacher")){
-                return "admin";
+               return "admin";
             }
             else{
                 return "student";

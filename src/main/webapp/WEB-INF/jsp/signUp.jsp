@@ -48,9 +48,9 @@
 
 
     <main class="form-control w-100 m-auto">
-        <form:form class="form-signin" id="form-signin" modelAttribute="user">
+        <form:form action="/signup" class="form-signin" id="form-signin" method="post" modelAttribute="user">
             <%--        <img class="mb-4" src="Icons/icons8-hr-100.png" alt="" width="72" height="72">--%>
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
             <form:input type="email" id="inputEmail" class="form-control" placeholder="Email address" path="email"
                         required=""/>

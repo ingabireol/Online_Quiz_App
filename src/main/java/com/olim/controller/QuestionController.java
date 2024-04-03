@@ -16,14 +16,9 @@ import java.util.List;
 @Controller
 @RequestMapping("questions/")
 public class QuestionController {
-    @GetMapping("")
-    public String getHome(){
-        return "index";
-    }
 
     @Autowired
     QuestionService service;
-
 
     @GetMapping("create")
     public String createQuestion(Model model){

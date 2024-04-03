@@ -14,6 +14,9 @@ public class QuestionService {
     @Autowired
     QuestionDao dao;
 
+    public Question saveTheQuestion(Question question){
+        return dao.save(question);
+    }
     public boolean saveQuestion(Question question){
         Question q = dao.save(question);
         return (q != null)?true:false;

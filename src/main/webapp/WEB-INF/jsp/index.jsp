@@ -31,12 +31,15 @@
                     <a class="nav-link" href="questions/all">View Questions</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    <a class="nav-link" href="/quiz/all" aria-disabled="true">View All Quiz</a>
                 </li>
+
+                <li><span>${user.role}</span></li>
             </ul>
         </div>
     </div>
 </nav>
+<h2 class="alert-success">${message}</h2>
 
 <div class="row">
 
