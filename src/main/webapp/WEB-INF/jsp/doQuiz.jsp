@@ -10,9 +10,10 @@
     <%
         Quiz quiz = (Quiz) session.getAttribute("quiz");
         List<Question> questionList = quiz.getQuestionList();
-        System.out.println(questionList);
+//        System.out.println(questionList);
         session.setAttribute("questions", questionList);
         int i = 0;
+        System.out.println(session.getId());
     %>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -173,9 +174,11 @@
                     throw new Error("Network response was not ok");
                 }
                 return response.text();
+
             })
             .then(data => {
                 console.log(data); // Log the response from the server
+                window.location.href = "/quiz/marks";
             })
             .catch(error => {
                 console.error('There was an error!', error);

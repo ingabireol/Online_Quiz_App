@@ -49,10 +49,10 @@ public class UserController {
             return "redirect:/admin";
 //            return "redirect:/admin";
         } else if (checkUser.equalsIgnoreCase("student")) {
-            session.setAttribute("user",user);
+            session.setAttribute("user",service.getUserByEmail(user.getEmail()));
             red.addFlashAttribute("message","User loged in as Student");
             red.addFlashAttribute("text","text-success");
-            return "redirect:/login";
+            return "redirect:/user/home";
 //            return "redirect:/student";
         }
         else {
@@ -63,6 +63,11 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/home")
+    public String getUserPage(){
+        return "UserPage";
+    }
+
     @GetMapping("/login")
     public String getLoginPage(Model model){
         model.addAttribute("user",new User());
@@ -70,7 +75,13 @@ public class UserController {
     }
     @GetMapping("/admin")
     public String getHome(Model model,HttpSession session){
+        System.out.println(session);
+        System.out.println(session.getId());
         User user = (User) session.getAttribute("user");
+        System.out.println(session.getId());
+        if(user == null){
+            return "/login";
+        }
         System.out.println(user.getEmail()+" "+user.getRole());
         model.addAttribute("user",user);
         return "index";

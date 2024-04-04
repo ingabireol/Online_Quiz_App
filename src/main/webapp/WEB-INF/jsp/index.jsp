@@ -25,10 +25,10 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="questions/create">Create Question</a>
+                    <a class="nav-link" href="/questions/create">Create Question</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="questions/all">View Questions</a>
+                    <a class="nav-link" href="/questions/all">View Questions</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/quiz/all" aria-disabled="true">View All Quiz</a>

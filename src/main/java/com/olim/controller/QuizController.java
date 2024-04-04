@@ -1,9 +1,7 @@
 package com.olim.controller;
 
-import com.olim.model.Question;
-import com.olim.model.Quiz;
-import com.olim.model.QuizData;
-import com.olim.model.User;
+import com.olim.dao.DoneQuizDao;
+import com.olim.model.*;
 import com.olim.service.QuestionService;
 import com.olim.service.QuizService;
 import jakarta.servlet.http.HttpSession;
@@ -20,7 +18,8 @@ import java.util.List;
 
 @Controller
 public class QuizController {
-
+    @Autowired
+    DoneQuizDao doneQuizDao;
     @Autowired
     QuizService service;
     @Autowired
@@ -97,22 +96,49 @@ public class QuizController {
         User user = (User) session.getAttribute("user");
         Quiz quiz = (Quiz) session.getAttribute("quiz");
         List<Question> questions = quiz.getQuestionList();
+        System.out.println(questions);
+        System.out.println("--------------------");
+        System.out.println(quiz);
+        System.out.println("-----------------");
+        System.out.println(answers);
+        System.out.println("----------------------");
+
+
+        if(quiz == null){
+            System.out.println("null quiz");
+        }
         int i = 0;
         int marks = 0;
-
+        System.out.println(session.getId());
         for(Question q: questions){
             if(q.getAnswer().equals(answers.get(i))){
-                i++;
+                System.out.println(q.getAnswer());
+                System.out.println(answers.get(i));
                 marks++;
             }
-
+            i++;
         }
-        model.addAttribute("marks",marks);
+        System.out.println(user);
+        System.out.println(quiz);
         System.out.println(marks);
-        return "redirect:/marks";
+        session.setAttribute("marks",marks);
+        DoneQuiz doneQuiz  = new DoneQuiz();
+        doneQuiz.setQuiz(quiz);
+        doneQuiz.setUser(user);
+        doneQuiz.setMarks(marks);
+        doneQuizDao.save(doneQuiz);
+        return "marks";
     }
-    @GetMapping("/marks")
+    @GetMapping("/quiz/marks")
     public String getMarks(Model model){
         return "marks";
+    }
+    @GetMapping("/quiz/available")
+    public String getAvailableQuiz(HttpSession session,Model model){
+        List<Quiz> availableQuiz = service.allQuizes();
+//        model.addAttribute("availableQuiz",availableQuiz);
+        session.setAttribute("availableQuiz",availableQuiz);
+
+        return "availableQuiz";
     }
 }
