@@ -56,6 +56,10 @@
     <div class="row m-auto w-100">
         <label for="quizTitle" class="form-label">Quiz Title</label>
         <input type="text" class="form-control" id="quizTitle" required>
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duration</label>
+            <input type="text" class="form-control" id="duration" required>
+        </div>
     <div class="col-md-8 col-sm-12 form-question card">
         <h2>In put Question</h2>
         <form action="">
@@ -63,6 +67,7 @@
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" required>
             </div>
+
             <div class="mb-3">
                 <label for="option1" class="form-label">Option 1</label>
                 <input type="text" class="form-control" id="option1" required>
@@ -80,11 +85,11 @@
                 <input type="text" class="form-control" id="option4" required>
             </div>
             <div class="mb-3">
-                <label for="Answer" class="form-label">Category</label>
+                <label for="Answer" class="form-label">Answer</label>
                 <input type="text" class="form-control" id="Answer" required>
             </div>
             <div class="mb-3">
-                <label for="category" class="form-label">Answer</label>
+                <label for="category" class="form-label">Category</label>
                 <input type="text" class="form-control" id="category" required>
             </div>
             <button onclick="addQuestion()" type="button" class="btn p-2 btn-primary">Add Question</button>
@@ -105,12 +110,15 @@
 <script>
 
     let quizTitle;
+    let duration;
     let formDataList = [];
     let i = 0;
     function addQuestion() {
 
         let form = document.querySelector('.form-question form');
         quizTitle = document.querySelector("#quizTitle").value;
+        duration = document.querySelector("#duration").value;
+
 
         let title = form.querySelector('#title').value;
         let option1 = form.querySelector('#option1').value;
@@ -119,6 +127,7 @@
         let option4 = form.querySelector('#option4').value;
         let answer = form.querySelector('#Answer').value;
         let category = form.querySelector('#category').value;
+
 
         if (!form.reportValidity()) {
             form.reportValidity();
@@ -132,7 +141,7 @@
                 option3: option3,
                 option4: option4,
                 answer: answer,
-                category: category
+                category: category,
             };
             i++;
             formDataList.push(questionData);
@@ -162,7 +171,8 @@
     function sendQuestions() {
         const formData = {
             questionList :formDataList,
-            quizTitle : quizTitle
+            quizTitle : quizTitle,
+            duration : duration
         };
 
 
@@ -181,9 +191,11 @@
                 return response.text();
             })
             .then(data => {
+                window.location.href = "/admin";
                 console.log(data); // Log the response from the server
             })
             .catch(error => {
+                alert("Creation Failed");
                 console.error('There was an error!', error);
             });
     }

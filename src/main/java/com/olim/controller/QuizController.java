@@ -36,11 +36,13 @@ public class QuizController {
 
         List<Question> questions = new ArrayList<>();
         String quizTitle = quizData.quizTitle;
+        Integer duration = quizData.duration;
         for(Question q: questionList){
             Question question = questionService.saveTheQuestion(q);
             questions.add(questionService.findQuestionById(question.getId()));
         }
         Quiz quiz = new Quiz();
+        quiz.setDuration(duration);
         quiz.setUser(user);
         quiz.setTitle(quizTitle);
         quiz.setQuestionList(questions);
@@ -54,7 +56,7 @@ public class QuizController {
         return "redirect:/admin";
     }
 
-    @GetMapping("quiz/all")
+    @GetMapping("/quiz/all")
     public String getAll(Model model){
         List<Quiz>  quizList = service.allQuizes();
         model.addAttribute("quizList",quizList);
@@ -76,6 +78,7 @@ public class QuizController {
     public String showDoQuizForm(@PathVariable("id") Long id, HttpSession session){
         Quiz quiz = service.getQuiz(id);
         session.setAttribute("quiz",quiz);
+        session.setAttribute("startTime",new java.util.Date().getTime());
         return "doQuiz";
     }
 
@@ -141,4 +144,5 @@ public class QuizController {
 
         return "availableQuiz";
     }
+
 }

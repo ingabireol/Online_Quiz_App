@@ -18,4 +18,5 @@ public class Quiz {
     @ManyToMany
     private List<Question> questionList;
     private Date createDate;
+    private Integer duration;
 }

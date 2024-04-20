@@ -66,6 +66,7 @@
 </nav>
 
 <section class="row m-auto">
+    <div></div>
     <div class="col-lg-6 form-question card border border-3">
         <h2 id="quiz_name"> <%=questionList.get(0).getName()%> </h2>
         <form action="">
@@ -103,8 +104,10 @@
     </div>
 
     <div class="col-md-6 card available-questions">
+        <h1 id="Quiz-progress">1 / <%=quiz.getQuestionList().size()%></h1>
+        <div><h3 id="countdown">
 
-        <div><h3>Helloo my geee</h3></div>
+        </h3></div>
         <button onclick="sendQuestions()" type="button" class="btn p-2 m-auto fixed-bottom btn-success">Submit Quiz
         </button>
     </div>
@@ -136,8 +139,8 @@
             .then(response => response.json())
             .then(data => {
                 // Update the HTML to display the next question
-
                 document.getElementById("quiz_name").innerText = data.name;
+                document.getElementById("Quiz-progress").innerText = index +1 +" / "+<%=questionList.size()%>;
                 document.getElementById('option1').value = data.option1;
                 document.getElementById('option2').value = data.option2;
                 document.getElementById('option3').value = data.option3;
@@ -183,6 +186,33 @@
             .catch(error => {
                 console.error('There was an error!', error);
             });
+    }
+    var quizDurationMinutes = <%=quiz.getDuration() %>;
+    var quizDurationSeconds = quizDurationMinutes * 60;
+    var quizStartTime = <%= session.getAttribute("startTime") %>;
+    var elapsedTime = Math.floor((new Date().getTime() - quizStartTime) / 1000);
+    var remainingTime = Math.max(0, quizDurationSeconds - elapsedTime);
+    var countdownElement = document.getElementById('countdown');
+    countdownElement.innerText = 'Time remaining: ' + formatTime(remainingTime);
+    var timer = setInterval(function() {
+        if (remainingTime <= 0) {
+            clearInterval(timer); // Stop the timer when time is up
+            finishQuiz();
+        } else {
+            countdownElement.innerText = 'Time remaining: ' + formatTime(remainingTime);
+            remainingTime--;
+        }
+    }, 1000);
+    function formatTime(timeInSeconds) {
+        var hours = Math.floor(timeInSeconds / 3600);
+        var minutes = Math.floor((timeInSeconds % 3600) / 60);
+        var seconds = timeInSeconds % 60;
+        return hours + 'h ' + minutes + 'm ' + seconds + 's';
+    }
+
+    function finishQuiz() {
+        // Redirect to the finish method or perform any other action
+        window.location.href = '/quiz/marks';
     }
 </script>
 </body>

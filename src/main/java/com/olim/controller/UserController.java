@@ -3,6 +3,7 @@ package com.olim.controller;
 import com.olim.dao.UserDao;
 import com.olim.model.User;
 import com.olim.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,12 +65,18 @@ public class UserController {
     }
 
     @GetMapping("/user/home")
-    public String getUserPage(){
+    public String getUserPage(HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
         return "UserPage";
     }
 
     @GetMapping("/login")
-    public String getLoginPage(Model model){
+    public String getLoginPage(Model model, HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
         model.addAttribute("user",new User());
         return "login";
     }
@@ -79,12 +86,17 @@ public class UserController {
         System.out.println(session.getId());
         User user = (User) session.getAttribute("user");
         System.out.println(session.getId());
-        if(user == null){
-            return "/login";
-        }
         System.out.println(user.getEmail()+" "+user.getRole());
         model.addAttribute("user",user);
         return "index";
+    }
+    @GetMapping("/logout")
+    public String logoutUser(HttpSession session, HttpServletResponse response) {
+        session.invalidate();
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
+        return "redirect:/login";
     }
 
 }

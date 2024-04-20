@@ -24,6 +24,7 @@
     .form-signin {
         max-width: 330px;
         padding: 1rem;
+        margin: auto;
     }
 
     .form-signin .form-floating:focus-within {
@@ -59,10 +60,11 @@
             <form:input type="password" id="inputPassword" class="form-control" placeholder="Password" path="password"
                         required=""/>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
 
         </form:form>
             <h4 class="text-center ${text}">${message}</h4>
+            <a href="/login" class="d-block text-center mt-3 login-link">Does not  have an account? Sign up here</a>
 
         <p class="mt-5 mb-3 text-muted">&copy; Ingabire Olivier 2024</p>
 

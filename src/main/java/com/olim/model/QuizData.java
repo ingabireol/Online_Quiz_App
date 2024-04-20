@@ -1,10 +1,14 @@
 package com.olim.model;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class QuizData {
     public List<Question> questionList;
     public String quizTitle;
+    public Integer duration;
 
     public QuizData() {
     }
